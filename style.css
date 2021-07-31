@@ -7,7 +7,7 @@ body {
 #display {
     background-color: black;
     display: grid;
-    grid-template-columns: repeat(3,auto);
+    grid-template-columns: repeat(3,1fr);
     gap: 2px;
     align-content: center;
 }
