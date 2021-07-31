@@ -1,13 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&display=swap');
+
 body {
+    font-family: 'Zilla Slab', serif;
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 900px;
     text-align: center;
+}
+
+section {
+    margin: 20px 0px 50px 0px;
+    
+}
+
+button {
+    background-color: black;
+    color: white;
+    border: 0;
+    border-radius: 0;
+    transition: 0.25s;
+    height: 22px;
+    margin-left: 35px;
+}
+
+button:hover {
+    background-color: grey;
+    cursor: pointer;
+}
+
+input {
+    width: 50px;
+    height: 100%;
+}
+
+h1 {
+    font-size: 50px;
+    margin-bottom: 0;
+}
+
+p {
+    font-size: 30px;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+
+header {
+    height: 50px;
+}
+
+footer {
+    opacity: 60%;
+    margin-top: 40px;
+    border-top: 1px solid rgba(0,0,0, 0.2);
+    text-align: left;
 }
 
 #display {
     background-color: black;
     display: grid;
-    grid-template-columns: repeat(3,auto);
+    grid-template-columns: repeat(3,1fr);
     gap: 2px;
     align-content: center;
 }
@@ -16,9 +66,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
     background-color: white;
-    font-size: 50px;
 }
 
 .coord:hover {
@@ -26,6 +74,13 @@ body {
 }
 
 
+.o {
+    color: palegreen;
+}
+
+.x {
+    color: palevioletred;
+}
 
 /* .row {
     height: 100px;
