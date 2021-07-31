@@ -1,0 +1,46 @@
+body {
+    margin: 0 auto;
+    max-width: 1000px;
+    text-align: center;
+}
+
+#display {
+    background-color: black;
+    display: grid;
+    grid-template-columns: repeat(3,auto);
+    gap: 2px;
+    align-content: center;
+}
+
+.coord {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background-color: white;
+    font-size: 50px;
+}
+
+.coord:hover {
+    cursor: pointer;
+}
+
+
+
+/* .row {
+    height: 100px;
+    margin: 0 auto;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.col {
+    width: 33%;
+    height: 33%;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+} */
+
