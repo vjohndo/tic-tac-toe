@@ -123,7 +123,8 @@ const makeClickable = () => {
     }
 }
 
-makeClickable();
+generateGameboard();
+gamelog.textContent = `Welome to Tic-Tac-Toe`
 sizeButton.addEventListener('click', generateGameboard)
 sizeInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
