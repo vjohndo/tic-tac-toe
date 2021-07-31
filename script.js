@@ -69,9 +69,10 @@ const checkWinCases = (rowChosen,colChosen) => {
     }
 
     console.log(Object.values(winStates))
-    // return (Object.values(winStates).includes(true)) ? true : false;
 
-    if  {
+    return (Object.values(winStates).includes(true)) ? true : false;
+
+    if (Object.values(winStates).includes(true)) {
         return true;
     } else {
         return false;
