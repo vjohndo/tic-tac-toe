@@ -1,14 +1,25 @@
+const sizeButton = document.querySelector('#gameControls > button')
+const sizeInput = document.querySelector('#gameControls > input')
+const gamelog = document.querySelector('#gamelog')
 let isO = true;
 let gameboardState = []
 let gameSize = 3;
+let moveLimit = 9;
+let moves = 0;
+let isWinner = false;
+
+const initialiseVariables = () => {
+    gameboardState = [];
+    movesMade = 0;
+    gamelog.textContent = `Player's Turn: ${(isO)?"O":"X"}`;
+}
 
 // generate gameboard
-const sizeButton = document.querySelector('#gameControls > button')
 const generateGameboard = () => {
-    gameboardState = []
-    const sizeInput = document.querySelector('#gameControls > input')
-
+    initialiseVariables()
+    
     gameSize = sizeInput.value;
+    moveLimit = gameSize * gameSize;
     let gameboard = document.getElementById('display');
     
     while (gameboard.firstChild) {
@@ -16,8 +27,8 @@ const generateGameboard = () => {
         gameboard.removeChild(gameboard.lastChild)
     }
 
+    // Create new nodes aka tiles for game board
     for (row = 1; row <= gameSize; row ++ ) {
-        
         gameboardState.push([]);
 
         for (col = 1; col <= gameSize; col ++ ) {
@@ -27,30 +38,30 @@ const generateGameboard = () => {
             newNode.dataset.row = `${row}`
             newNode.dataset.col = `${col}`
             newNode.textContent = ``;
+            newNode.style.height = `${900/gameSize}px`
+            newNode.style.fontSize = `${900/gameSize*0.8}px` 
             gameboard.append(newNode);
         }   
     }
     
+    // Update grid template columns
     let array = []
     for (i = 0; i < gameSize; i++) {
         array.push("1fr")
     }
     gameboard.style.gridTemplateColumns = array.join(' ');
 
-    gameMechanics();
+    // Run game mechanics
+    makeClickable();
 }
-sizeButton.addEventListener('click', generateGameboard)
-
 const checkWinCases = (rowChosen,colChosen) => {
 
-    // check row
-    let target = gameboardState[rowChosen-1][colChosen-1]
-    let winStates = {
+    const target = gameboardState[rowChosen-1][colChosen-1]
+    const winStates = {
         rowWin: true,
         colWin: true,
         mainDiagonalWin: true,
         antiDiagonalWin: true,
-    
     }
 
     for (let i = 0; i < gameSize; i++) {
@@ -63,43 +74,59 @@ const checkWinCases = (rowChosen,colChosen) => {
         if (gameboardState[i][i] !== target || gameboardState[i][i] === "") {
             winStates.mainDiagonalWin = false;
         }
-        if (gameboardState[i][gameSize-i-1] || gameboardState[i][gameSize-i-1] === "") {
+        if (gameboardState[i][gameSize-i-1] !== target || gameboardState[i][gameSize-i-1] === "") {
             winStates.antiDiagonalWin = false;
         }
     }
 
-    console.log(Object.values(winStates))
-
     return (Object.values(winStates).includes(true)) ? true : false;
+}
+const clickMechanics = (event) => {
+    const rowChosen = event.target.dataset.row;
+    const colChosen = event.target.dataset.col;
+    console.log('is firing')
 
-    if (Object.values(winStates).includes(true)) {
-        return true;
-    } else {
-        return false;
+    // Update mark
+    if (!event.target.dataset.mark) {
+        movesMade ++;
+        event.target.textContent = (isO) ? "O" : "X";
+        event.target.classList.add(event.target.textContent.toLowerCase());
+        gameboardState[rowChosen-1][colChosen-1] = event.target.textContent
+        isO = !isO;
+
+        // Check if win
+        isWinner = (checkWinCases(rowChosen,colChosen));
+
+        if (isWinner) {
+            gamelog.textContent = `Game has been won by ${(!isO)?"O":"X"}`
+            makeUnclickable()
+        } else if (movesMade === moveLimit) {
+            gamelog.textContent = `It's a draw`
+            makeUnclickable()
+        } else {
+            gamelog.textContent = `Player's Turn: ${(isO)?"O":"X"}`;
+        }
     }
 }
-
-// update nodes when clicked.
-const gameMechanics = () => {
+const makeUnclickable = () => {
     const nodes = document.querySelectorAll('.coord')
-
+        for (let node of nodes) {
+            node.removeEventListener('click', clickMechanics)
+        }
+}
+// update nodes when clicked.
+const makeClickable = () => {
+    // Go through each node, add in row/col data, text content and update gameboard
+    const nodes = document.querySelectorAll('.coord')
     for (let node of nodes) {
-        node.addEventListener('click', (event) => {
-            const rowChosen = event.target.dataset.row;
-            const colChosen = event.target.dataset.col;
-            
-            // Update mark
-            if (!event.target.dataset.mark) {
-                event.target.textContent = (isO) ? "O" : "X";
-                event.target.dataset.mark = event.target.textContent
-                gameboardState[rowChosen-1][colChosen-1] = event.target.textContent
-                isO = !isO;
-            }
-
-            // Check if win
-            console.log("is game win?", checkWinCases(rowChosen,colChosen), "for", event.target.textContent);
-        })
+        node.addEventListener('click', clickMechanics)
     }
 }
 
-gameMechanics();
+makeClickable();
+sizeButton.addEventListener('click', generateGameboard)
+sizeInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      generateGameboard()
+    }
+});
