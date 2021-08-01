@@ -87,10 +87,11 @@ const clickMechanics = (event) => {
     console.log('is firing')
 
     // Update mark
-    if (!event.target.dataset.mark) {
+    if (!event.target.textContent) {
         movesMade ++;
         event.target.textContent = (isO) ? "O" : "X";
         event.target.classList.add(event.target.textContent.toLowerCase());
+        event.target.style.userSelect = 'none'
         gameboardState[rowChosen-1][colChosen-1] = event.target.textContent
         isO = !isO;
 
