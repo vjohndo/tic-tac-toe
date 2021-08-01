@@ -3,6 +3,7 @@ body {
     margin: 0 auto;
     max-width: 900px;
     text-align: center;
+    caret-color: transparent;
 }
 
 section {
