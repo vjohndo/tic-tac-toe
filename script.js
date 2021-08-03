@@ -14,12 +14,16 @@ const initialiseVariables = () => {
     gamelog.textContent = `Player's Turn: ${(isO)?"O":"X"}`;
 }
 
-// generate gameboard
 const generateGameboard = () => {
     initialiseVariables()
     
     gameSize = sizeInput.value;
     moveLimit = gameSize * gameSize;
+
+    // update CSS variable
+    let root = document.documentElement;
+    root.style.setProperty('--game-size', gameSize);
+
     let gameboard = document.getElementById('display');
     
     while (gameboard.firstChild) {
@@ -38,8 +42,6 @@ const generateGameboard = () => {
             newNode.dataset.row = `${row}`
             newNode.dataset.col = `${col}`
             newNode.textContent = ``;
-            newNode.style.height = `${900/gameSize}px`
-            newNode.style.fontSize = `${900/gameSize*0.8}px` 
             gameboard.append(newNode);
         }   
     }
@@ -51,9 +53,9 @@ const generateGameboard = () => {
     }
     gameboard.style.gridTemplateColumns = array.join(' ');
 
-    // Run game mechanics
-    makeClickable();
+    makeDivsClickable();
 }
+
 const checkWinCases = (rowChosen,colChosen) => {
 
     const target = gameboardState[rowChosen-1][colChosen-1]
@@ -81,6 +83,7 @@ const checkWinCases = (rowChosen,colChosen) => {
 
     return (Object.values(winStates).includes(true)) ? true : false;
 }
+
 const clickMechanics = (event) => {
     const rowChosen = event.target.dataset.row;
     const colChosen = event.target.dataset.col;
@@ -109,14 +112,16 @@ const clickMechanics = (event) => {
         }
     }
 }
+
 const makeUnclickable = () => {
     const nodes = document.querySelectorAll('.coord')
         for (let node of nodes) {
             node.removeEventListener('click', clickMechanics)
         }
 }
+
 // update nodes when clicked.
-const makeClickable = () => {
+const makeDivsClickable = () => {
     // Go through each node, add in row/col data, text content and update gameboard
     const nodes = document.querySelectorAll('.coord')
     for (let node of nodes) {
