@@ -1,12 +1,15 @@
 /* CSS variables */
 :root {
-    --game-size: 3
+    --game-size: 3;
+    --gap: 3px;
+    --reduced-row: calc(var(--game-size)-2);
+    --total-free-height: calc(var(--gap) * var(--reduced-row))
 }
 
 body {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     margin: 0 auto;
-    max-width: 80vmin;
+    max-width: 60vmin;
     text-align: center;
     caret-color: transparent;
 }
@@ -62,7 +65,7 @@ footer {
     justify-content: center;
     align-items: center;
     background-color: white;
-    height: calc(80vmin/var(--game-size));
+    height: calc((60vmin - var(--total-free-height))/var(--game-size));
     font-size: calc(80vmin/var(--game-size)*0.8);
 }
 
@@ -74,7 +77,7 @@ footer {
     background-color: black;
     display: grid;
     grid-template-columns: repeat(3,1fr);
-    gap: 3px;
+    gap: var(--gap);
     align-content: center;
 }
 

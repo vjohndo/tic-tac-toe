@@ -1,17 +1,18 @@
 const sizeButton = document.querySelector('#gameControls > button')
 const sizeInput = document.querySelector('#gameControls > input')
 const gamelog = document.querySelector('#gamelog')
-let isO = true;
+let isNaughtsTurn = false;
 let gameboardState = []
 let gameSize = 3;
 let moveLimit = 9;
 let moves = 0;
 let isWinner = false;
+let whoWon = ""
 
 const initialiseVariables = () => {
     gameboardState = [];
     movesMade = 0;
-    gamelog.textContent = `Player's Turn: ${(isO)?"O":"X"}`;
+    gamelog.textContent = `Player's Turn: ${(isNaughtsTurn)?"O":"X"}`;
 }
 
 const generateGameboard = () => {
@@ -87,28 +88,29 @@ const checkWinCases = (rowChosen,colChosen) => {
 const clickMechanics = (event) => {
     const rowChosen = event.target.dataset.row;
     const colChosen = event.target.dataset.col;
-    console.log('is firing')
 
     // Update mark
     if (!event.target.textContent) {
         movesMade ++;
-        event.target.textContent = (isO) ? "O" : "X";
+        event.target.textContent = (isNaughtsTurn) ? "O" : "X";
         event.target.classList.add(event.target.textContent.toLowerCase());
         event.target.style.userSelect = 'none'
         gameboardState[rowChosen-1][colChosen-1] = event.target.textContent
-        isO = !isO;
+        isNaughtsTurn = !isNaughtsTurn;
 
         // Check if win
         isWinner = (checkWinCases(rowChosen,colChosen));
 
         if (isWinner) {
-            gamelog.textContent = `Game has been won by ${(!isO)?"O":"X"}`
+            gamelog.textContent = `Game has been won by ${(!isNaughtsTurn)?"O":"X"}`
+            whoWon = (!isNaughtsTurn)?"O":"X"
             makeUnclickable()
         } else if (movesMade === moveLimit) {
             gamelog.textContent = `It's a draw`
+            whoWon = "draw"
             makeUnclickable()
         } else {
-            gamelog.textContent = `Player's Turn: ${(isO)?"O":"X"}`;
+            gamelog.textContent = `Player's Turn: ${(isNaughtsTurn)?"O":"X"}`;
         }
     }
 }
@@ -119,7 +121,6 @@ const makeUnclickable = () => {
             node.removeEventListener('click', clickMechanics)
         }
 }
-
 // update nodes when clicked.
 const makeDivsClickable = () => {
     // Go through each node, add in row/col data, text content and update gameboard
