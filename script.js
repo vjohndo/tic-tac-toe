@@ -1,7 +1,7 @@
 const sizeButton = document.querySelector('#gameControls > button')
 const sizeInput = document.querySelector('#gameControls > input')
 const gamelog = document.querySelector('#gamelog')
-let isNaughtsTurn = false;
+let isOTurn = false;
 let gameboardState = []
 let gameSize = 3;
 let moveLimit = 9;
@@ -9,10 +9,12 @@ let moves = 0;
 let isWinner = false;
 let whoWon = ""
 
+const currentMarker = (isNaughtsTurn) => (isNaughtsTurn)?"O":"X";
+
 const initialiseVariables = () => {
     gameboardState = [];
     movesMade = 0;
-    gamelog.textContent = `Player's Turn: ${(isNaughtsTurn)?"O":"X"}`;
+    gamelog.textContent = `Player's Turn: ${currentMarker(isOTurn)}`;
 }
 
 const generateGameboard = () => {
@@ -33,10 +35,10 @@ const generateGameboard = () => {
     }
 
     // Create new nodes aka tiles for game board
-    for (row = 1; row <= gameSize; row ++ ) {
+    for (row = 0; row < gameSize; row ++ ) {
         gameboardState.push([]);
 
-        for (col = 1; col <= gameSize; col ++ ) {
+        for (col = 0; col < gameSize; col ++ ) {
             gameboardState[row-1].push("")
             const newNode =  document.createElement('div');
             newNode.classList.add(`coord`,`r${row}c${col}`);
@@ -92,25 +94,25 @@ const clickMechanics = (event) => {
     // Update mark
     if (!event.target.textContent) {
         movesMade ++;
-        event.target.textContent = (isNaughtsTurn) ? "O" : "X";
+        event.target.textContent = (isOTurn) ? "O" : "X";
         event.target.classList.add(event.target.textContent.toLowerCase());
         event.target.style.userSelect = 'none'
         gameboardState[rowChosen-1][colChosen-1] = event.target.textContent
-        isNaughtsTurn = !isNaughtsTurn;
+        isOTurn = !isOTurn;
 
         // Check if win
         isWinner = (checkWinCases(rowChosen,colChosen));
 
         if (isWinner) {
-            gamelog.textContent = `Game has been won by ${(!isNaughtsTurn)?"O":"X"}`
-            whoWon = (!isNaughtsTurn)?"O":"X"
+            gamelog.textContent = `Game has been won by ${(!isOTurn)?"O":"X"}`
+            whoWon = (!isOTurn)?"O":"X"
             makeUnclickable()
         } else if (movesMade === moveLimit) {
             gamelog.textContent = `It's a draw`
             whoWon = "draw"
             makeUnclickable()
         } else {
-            gamelog.textContent = `Player's Turn: ${(isNaughtsTurn)?"O":"X"}`;
+            gamelog.textContent = `Player's Turn: ${(isOTurn)?"O":"X"}`;
         }
     }
 }

@@ -171,8 +171,11 @@ const miniMax = (gameboardState, isNaughtsTurn = false) => {
     }
 }
 
-const markBoard = (arr) => {
-    const targetNode = document.querySelector(`.r${arr[0]}c${arr[1]}`);
+const markBoard = () => {
+    miniMax(gameboardState,isNaughtsTurn)
+    let arr = xbest.move
+    const targetNode = document.querySelector(`.r${arr[0]+1}c${arr[1]+1}`);
+    console.log(`.r${arr[0]}c${arr[1]}`)
 
     const rowChosen = targetNode.dataset.row;
     const colChosen = targetNode.dataset.col;
