@@ -40,50 +40,6 @@ const checkArraySame = (arr) => {
     return arr.every(x => Object.is(arr[0], x));
 }
 
-// tested
-const gameboardWinCheck = (gameboardState) => {
-    
-    // check diagonals
-    let mainDiagToCheck = [];
-    let antiDiagToCheck = [];
-    for (let i = 0; i < gameSize; i++) {
-        mainDiagToCheck.push(gameboardState[i][i]);
-        antiDiagToCheck.push(gameboardState[i][gameSize-i-1]);
-    }
-
-    if (checkArraySame(mainDiagToCheck) && mainDiagToCheck[0] !== "") {
-        return mainDiagToCheck[0];
-    } 
-
-    if (checkArraySame(antiDiagToCheck) && antiDiagToCheck[0] !== "") {
-        return antiDiagToCheck[0];
-    }
-
-    // check all rows
-    for (let x = 0; x < gameSize; x++) {
-        let rowToCheck = [];
-        for (let y = 0; y < gameSize; y++) {
-            rowToCheck.push(gameboardState[x][y])
-        }
-        if (checkArraySame(rowToCheck) && rowToCheck[0] !== "") {
-            return rowToCheck[0];
-        }
-    }
-
-    // check all cols
-    for (let y = 0; y < gameSize; y++) {
-        let colToCheck = [];
-        for (let x = 0; x < gameSize; x++) {
-            colToCheck.push(gameboardState[x][y]);   
-        }
-        if (checkArraySame(colToCheck) && colToCheck[0] !== "") {
-            return colToCheck[0];
-        }
-    }
-
-    return ""
-}
-
 // tested, works in the perspective of "X"
 const scoreGameX = (gameboardState) => {
     
@@ -172,7 +128,7 @@ const miniMax = (gameboardState, isNaughtsTurn = false) => {
 }
 
 const markBoard = () => {
-    miniMax(gameboardState,isNaughtsTurn)
+    miniMax(gameState,isOTurn)
     let arr = xbest.move
     const targetNode = document.querySelector(`.r${arr[0]+1}c${arr[1]+1}`);
     console.log(`.r${arr[0]}c${arr[1]}`)
@@ -181,24 +137,24 @@ const markBoard = () => {
     const colChosen = targetNode.dataset.col;
 
     movesMade ++;
-    targetNode.textContent = (isNaughtsTurn) ? "O" : "X";
+    targetNode.textContent = (isOTurn) ? "O" : "X";
     targetNode.classList.add(targetNode.textContent.toLowerCase());
     targetNode.style.userSelect = 'none'
-    gameboardState[rowChosen-1][colChosen-1] = targetNode.textContent
-    isNaughtsTurn = !isNaughtsTurn;
+    gameState[rowChosen-1][colChosen-1] = targetNode.textContent
+    isOTurn = !isOTurn;
 
     // Check if win
     isWinner = (checkWinCases(rowChosen,colChosen));
 
     if (isWinner) {
-        gamelog.textContent = `Game has been won by ${(!isNaughtsTurn)?"O":"X"}`
-        whoWon = (!isNaughtsTurn)?"O":"X"
-        makeUnclickable()
+        gamelog.textContent = `Game has been won by ${(!isOTurn)?"O":"X"}`
+        whoWon = (!isOTurn)?"O":"X"
+        removeNodeEvents()
     } else if (movesMade === moveLimit) {
         gamelog.textContent = `It's a draw`
         whoWon = "draw"
-        makeUnclickable()
+        removeNodeEvents()
     } else {
-        gamelog.textContent = `Player's Turn: ${(isNaughtsTurn)?"O":"X"}`;
+        gamelog.textContent = `Player's Turn: ${(isOTurn)?"O":"X"}`;
     }
 }
