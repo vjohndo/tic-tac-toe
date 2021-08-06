@@ -9,11 +9,12 @@
  </head>
  <body>
      <header>
-        <h1>Tic-Tac-Toe</h1>
+        <h1>Tic-Tac-Toe Simulator</h1>
      </header>
-     <section id='gameControls'>
-         BOARD SIZE: <input type="number" value="3">
-         <button>RESET</button>
+     <section id='gameControls'> 
+         <span>FIRST TURN: <input type="radio" id="oRadio"><label>'O'</label><input type="radio" id="xRadio"><label>'X'</label></span>
+         <span id = 'sizeInput'>BOARD SIZE: <input type="number" value="3" id='textInput' min="1" max="100"></span>
+         <span><button id="reset">RESET</button><button id='bot' class='botButton'>BOT 'X'</button></span>
      </section>
      <main>
         <p id="gamelog">Click Play</p>
@@ -21,7 +22,7 @@
          </div>
      </main>
      <footer>
-         Alpha version 1.02
+         Beta version 1.00
      </footer>
      <script src="script.js"></script>
      <script src="bot.js"></script>

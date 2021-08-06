@@ -129,10 +129,17 @@ const runMiniMax = () => {
 }
 
 const markBoard = () => {
+
+    
+
     miniMax(gameState,isOTurn)
     let arr = xBest.move
     const targetNode = document.querySelector(`.r${arr[0]}c${arr[1]}`);
     console.log(`.r${arr[0]}c${arr[1]}`)
+
+    targetNode.removeEventListener('mouseover', nodeMouseEnter);
+    targetNode.removeEventListener('mouseleave', nodeMouseLeave);
+    targetNode.classList.remove(currentMark(isOTurn));
 
     const rowChosen = targetNode.dataset.row;
     const colChosen = targetNode.dataset.col;
@@ -140,12 +147,13 @@ const markBoard = () => {
     movesMade ++;
     targetNode.textContent = currentMark(isOTurn);
     targetNode.classList.add(targetNode.textContent.toLowerCase());
+    targetNode.classList.add('bot');
     targetNode.style.userSelect = 'none'
     gameState[rowChosen][colChosen] = targetNode.textContent
     isOTurn = !isOTurn;
 
-    isWinner = Boolean(gameboardWinCheck(gameState));
-    if (isWinner) {
+    gameCheckResult = (gameboardWinCheck(gameState));
+    if (gameCheckResult === "O" || gameCheckResult === "X") {
         gamelog.textContent = `Game has been won by ${currentMark(!isOTurn)}`
         whoWon = currentMark(!isOTurn);
         isGameOver = true;
@@ -158,4 +166,3 @@ const markBoard = () => {
         gamelog.textContent = `Player's Turn: ${currentMark(isOTurn)}`;
     }
 }
-
