@@ -1,13 +1,14 @@
-// index of min, tested.
+// BOT SCRIPT ONLY...
+
 function indexOfMax(arr) {
     if (arr.length === 0) {
         return -1;
     }
 
-    var max = arr[0];
-    var maxIndex = 0;
+    let max = arr[0];
+    let maxIndex = 0;
 
-    for (var i = 1; i < arr.length; i++) {
+    for (let i = 1; i < arr.length; i++) {
         if (arr[i] > max) {
             maxIndex = i;
             max = arr[i];
@@ -17,14 +18,13 @@ function indexOfMax(arr) {
     return maxIndex;
 }
 
-// index of min, tested.
 function indexOfMin(arr) {
     if (arr.length === 0) {
         return -1;
     }
 
-    var min = arr[0];
-    var minIndex = 0;
+    let min = arr[0];
+    let minIndex = 0;
 
     for (let i = 0; i < arr.length; i++) {
         if (arr[i] < min) {
@@ -35,31 +35,27 @@ function indexOfMin(arr) {
     return minIndex
 }
 
-// checks if all elements in array is the same, tested.
-const checkArraySame = (arr) => {
-    return arr.every(x => Object.is(arr[0], x));
-}
+// needs to score game for given game state.
+const scoreGameFor = (marker, gameState) => {
+    
+    let whoWon = gameboardWinCheck(gameState);
+    let opponent = (marker==="X")?"O":"X";
 
-// tested, works in the perspective of "X"
-const scoreGameX = (gameboardState) => {
-    
-    let whoWon = gameboardWinCheck(gameboardState)
-    
-    if (whoWon === "X") {
+    // whoWon is a global variable
+    if (whoWon === marker) {
         return 10;
-    } else if (whoWon === "O") {
+    } else if (whoWon === opponent) {
         return -10;
     } else {
         return 0;
     }
 }
 
-// need to make a loop that goes through the array and and creates all possible game states. // tested
-const numberOfMovesLeft = (gameboardState) => {
+const numMovesLeft = (gameState) => {
     let possibleMoves = 0;
-    for (let x = 0; x < gameboardState.length; x++) {
-        for (let y = 0; y < gameboardState.length; y++) {
-            if (gameboardState[x][y] === "") {
+    for (let x = 0; x < gameSize; x++) {
+        for (let y = 0; y < gameSize; y++) {
+            if (gameState[x][y] === "") {
                 possibleMoves ++;
             }
         }
@@ -67,94 +63,99 @@ const numberOfMovesLeft = (gameboardState) => {
     return possibleMoves
 }
 
-// MUST BE PASSED CHAR create a NEW function that given, adds a character at the nth empty section // tested
-// array contains references to other objects, need to do a DEEP COPY.
-const populateNthEmpty = (gameboardState, n, char) => {
-    const newBoard = JSON.parse(JSON.stringify(gameboardState))
-    for (let x = 0; x < newBoard.length; x++) {
-        for (let y = 0; y < newBoard.length; y++) {
-            if (newBoard[x][y] === "") {
-                n--;
+const populateAtEmptyIndex = (gameState, i ,marker) => {
+    const possibleGameState = JSON.parse(JSON.stringify(gameState))
+    
+    for (let x = 0; x < gameSize; x++) {
+        for (let y = 0; y < gameSize; y++) {
+            if (possibleGameState[x][y] === "") {
+                i--;
             }
-            if (n <= 0) {
-                newBoard[x][y] = char;
-                return [newBoard, [x,y]]
+            if (i < 0) {
+                possibleGameState[x][y] = marker;
+                return {
+                        state: possibleGameState,
+                        move: [x,y]
+                    }
             }
         }
     }
 }
 
-let xbest = { move: null}
-
-const miniMax = (gameboardState, isNaughtsTurn = false) => {
-    // IF THE GAME IS OVER, RETURN SCORE FOR X's PERSPECTIVE
-    if (scoreGameX(gameboardState)) {
-        return scoreGameX(gameboardState)
+const xBest = {
+                move: null,
+                score: null
+            };
+        
+// Currently only works for "X", must therefore start on isOTurn = false.
+const miniMax = (gameState, isOTurn = false) => {
+    // for the GIVEN game state, is the game over.
+    let isGameOver = Boolean(gameboardWinCheck(gameState))
+    if (isGameOver) {
+        return scoreGameFor("X",gameState);
     } 
 
-    // CREATE A MOVES LIST CONTRAINING MOVES CORRESPONDING TO THE SCORES
-    // CREATE A SCORES LIST CONTAINING SCORES FOR POSSIBLE GAME STATES
-    const algoScores = [];
-    const algoMoves = [];
+    const possibleScores = [];
+    const possibleMoves = [];
     
+    let movesLeft = numMovesLeft(gameState);
+    let mark = currentMark(isOTurn);
 
-    // GET A NEW LIST OF GAME STATES
-    let numberOfMoves = numberOfMovesLeft(gameboardState);
-    let marker = (isNaughtsTurn) ? "O" : "X" ;
-    
-
-    // Need to run miniMax here again. 
-    for (let n = 1; n <= numberOfMoves; n++) {
-        let possibleGameState = populateNthEmpty(gameboardState,n,marker);
+    for (let i = 0; i < movesLeft; i++) {
+        let possibleGame = populateAtEmptyIndex(gameState,i,mark);
         
-        // algoScores.push(scoreGameX(newGameState));
-        let newGameState = possibleGameState[0];
-        algoScores.push(miniMax(newGameState,!isNaughtsTurn));
-
-        let newGameMove = possibleGameState[1];
-        algoMoves.push(newGameMove);
+        possibleScores.push(miniMax(possibleGame.state,!isOTurn));
+        possibleMoves.push(possibleGame.move);
     }
+
+    xBest.score = possibleScores;
 
     // IF IT WAS THE PLAYER'S O's TURN RETURN MIN SCORE
-    if (isNaughtsTurn) {
-        let minIndex = indexOfMin(algoScores);
-        return algoScores[minIndex];
+    if (isOTurn) {
+        let minIndex = indexOfMin(possibleScores);
+        xBest.move = possibleMoves[minIndex];
+        return possibleScores[minIndex];
     // IF IT WAS THE COMP'S TURN X's, RETURN MAX SCORE
     } else {
-        let maxIndex = indexOfMax(algoScores);
-        xbest.move = algoMoves[maxIndex];
-        return algoScores[maxIndex]
+        let maxIndex = indexOfMax(possibleScores);
+        xBest.move = possibleMoves[maxIndex];
+        return possibleScores[maxIndex]
     }
+}
+
+const runMiniMax = () => {
+    miniMax(gameState,isOTurn);
+    console.log(xBest.move);
 }
 
 const markBoard = () => {
     miniMax(gameState,isOTurn)
-    let arr = xbest.move
-    const targetNode = document.querySelector(`.r${arr[0]+1}c${arr[1]+1}`);
+    let arr = xBest.move
+    const targetNode = document.querySelector(`.r${arr[0]}c${arr[1]}`);
     console.log(`.r${arr[0]}c${arr[1]}`)
 
     const rowChosen = targetNode.dataset.row;
     const colChosen = targetNode.dataset.col;
 
     movesMade ++;
-    targetNode.textContent = (isOTurn) ? "O" : "X";
+    targetNode.textContent = currentMark(isOTurn);
     targetNode.classList.add(targetNode.textContent.toLowerCase());
     targetNode.style.userSelect = 'none'
-    gameState[rowChosen-1][colChosen-1] = targetNode.textContent
+    gameState[rowChosen][colChosen] = targetNode.textContent
     isOTurn = !isOTurn;
 
-    // Check if win
-    isWinner = (checkWinCases(rowChosen,colChosen));
-
+    isWinner = Boolean(gameboardWinCheck(gameState));
     if (isWinner) {
-        gamelog.textContent = `Game has been won by ${(!isOTurn)?"O":"X"}`
-        whoWon = (!isOTurn)?"O":"X"
-        removeNodeEvents()
+        gamelog.textContent = `Game has been won by ${currentMark(!isOTurn)}`
+        whoWon = currentMark(!isOTurn);
+        isGameOver = true;
+        removeNodeEvents();
     } else if (movesMade === moveLimit) {
         gamelog.textContent = `It's a draw`
-        whoWon = "draw"
+        isGameOver = true;
         removeNodeEvents()
     } else {
-        gamelog.textContent = `Player's Turn: ${(isOTurn)?"O":"X"}`;
+        gamelog.textContent = `Player's Turn: ${currentMark(isOTurn)}`;
     }
 }
+
