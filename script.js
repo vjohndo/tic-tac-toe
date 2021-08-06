@@ -8,22 +8,28 @@ let gameSize = 3;
 let moveLimit = 9;
 let movesMade = 0;
 let isWinner = false;
+let isGameOver = false;
 let whoWon = "" // takes on "X","O",""
 
 const currentMark = (isOTurn) => (isOTurn)?"O":"X";
 
 const initVariables = () => {
+    isGameOver = false;
     whoWon = ""
     gameState = [];
     movesMade = 0;
     gamelog.textContent = `Player's Turn: ${currentMark(isOTurn)}`;
 }
 
-// need to run the same game check.
+const arraySameCheck = (arr) => {
+    return arr.every(x => Object.is(arr[0], x));
+}
+
 const gameboardWinCheck = (gameState) => {
     
     let mainDiagToCheck = [];
     let antiDiagToCheck = [];
+    let isDraw = true;
 
     for (let x = 0; x < gameSize; x++) {
         mainDiagToCheck.push(gameState[x][x]);
@@ -34,22 +40,27 @@ const gameboardWinCheck = (gameState) => {
         for (let y = 0; y < gameSize; y++) {
             rowToCheck.push(gameState[x][y]);
             colToCheck.push(gameState[y][x]);
+            if (gameState[x][y] === "") {
+                isDraw = false;
+            }
         }
-        if (checkArraySame(rowToCheck) && rowToCheck[0] !== "") {
+        if (arraySameCheck(rowToCheck) && rowToCheck[0] !== "") {
             return rowToCheck[0];
         }
-        if (checkArraySame(colToCheck) && colToCheck[0] !== "") {
+        if (arraySameCheck(colToCheck) && colToCheck[0] !== "") {
             return colToCheck[0];
         }
     }
 
-    if (checkArraySame(mainDiagToCheck) && mainDiagToCheck[0] !== "") {
+    if (arraySameCheck(mainDiagToCheck) && mainDiagToCheck[0] !== "") {
         return mainDiagToCheck[0];
     } 
-    if (checkArraySame(antiDiagToCheck) && antiDiagToCheck[0] !== "") {
+    if (arraySameCheck(antiDiagToCheck) && antiDiagToCheck[0] !== "") {
         return antiDiagToCheck[0];
     }
-
+    if (isDraw) {
+        return "DRAW"
+    }
     return ""
 }
 
@@ -64,25 +75,25 @@ const nodeClicked = (event) => {
     const rowChosen = event.target.dataset.row;
     const colChosen = event.target.dataset.col;
 
-    // Update mark
     if (!event.target.textContent) {
+        
         movesMade ++;
         event.target.textContent = currentMark(isOTurn);
         event.target.classList.add(event.target.textContent.toLowerCase());
         event.target.style.userSelect = 'none'
         gameState[rowChosen][colChosen] = event.target.textContent;
-        // flip to next turn
+        
         isOTurn = !isOTurn;
 
-        // Check if win --> this uses the incorrect check.
         isWinner = Boolean(gameboardWinCheck(gameState));
-
         if (isWinner) {
             gamelog.textContent = `Game has been won by ${currentMark(!isOTurn)}`;
             whoWon = currentMark(!isOTurn);
+            isGameOver = true;
             removeNodeEvents();
         } else if (movesMade === moveLimit) {
             gamelog.textContent = `It's a draw`;
+            isGameOver = true;
             removeNodeEvents();
         } else {
             gamelog.textContent = `Player's Turn: ${currentMark(isOTurn)}`;
@@ -91,7 +102,6 @@ const nodeClicked = (event) => {
 }
 
 const addNodeEvents = () => {
-    // Go through each node and direct to click mechanics
     const nodes = document.querySelectorAll('.coord')
     for (let node of nodes) {
         node.addEventListener('click', nodeClicked)
@@ -102,7 +112,7 @@ const generateGameboard = () => {
     
     initVariables();
     
-    gameSize = sizeInput.value;
+    gameSize = Number(sizeInput.value);
     moveLimit = gameSize * gameSize;
 
     // Update CSS variable
@@ -136,16 +146,16 @@ const generateGameboard = () => {
     }
     gameboard.style.gridTemplateColumns = array.join(' ');
 
+    // Make nodes clickable
     addNodeEvents();
 }
 
-generateGameboard();
-
-gamelog.textContent = `Welome to Tic-Tac-Toe`
-sizeButton.addEventListener('click', generateGameboard)
-sizeInput.addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-      generateGameboard()
-    }
-});
+(() => {
+    generateGameboard();
+    gamelog.textContent = `Welome to Tic-Tac-Toe`
+    sizeButton.addEventListener('click', generateGameboard)
+    sizeInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {generateGameboard()}
+    });
+})(window);
 
