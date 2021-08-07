@@ -1,7 +1,6 @@
 /* CSS variables */
 @import url('https://fonts.googleapis.com/css2?family=Finger+Paint&family=VT323&display=swap');
 
-
 :root {
     --game-size: 3;
     --gap: 3px;
@@ -19,12 +18,25 @@ body {
     color: white;
 }
 
+header {
+    height: 50px;
+    padding-bottom: 25px;
+}
+
 section {
     margin: 20px 0px 50px 0px;
     display: flex;
     flex: 1 1 1;
     justify-content: space-evenly;
     font-size: 80%;
+}
+
+footer {
+    opacity: 60%;
+    margin-top: 40px;
+    border-top: 1px solid white;
+    text-align: left;
+    font-size: 1vmin;
 }
 
 span {
@@ -40,27 +52,9 @@ button {
     height: 22px;
 }
 
-#reset {
-    background-color: white;
-    color: black;
-    border: 0;
-    border-radius: 0;
-    height: 22px;
-    margin-right: 10px;
-}
-
-.botButton {
-    background-color: grey;
-}
-
 button:hover {
-    background-color: grey;
+    background-color: rgb(210, 210, 210);
     cursor: pointer;
-}
-
-#textInput {
-    width: 40px;
-    height: 75%;
 }
 
 h1 {
@@ -74,16 +68,8 @@ p {
     margin-bottom: 50px;
 }
 
-header {
-    height: 50px;
-}
-
-footer {
-    opacity: 60%;
-    margin-top: 40px;
-    border-top: 1px solid white;
-    text-align: left;
-    font-size: 1vmin;
+.botButton {
+    background-color: grey;
 }
 
 .coord {
@@ -99,14 +85,6 @@ footer {
 
 .coord:hover {
     cursor: pointer;
-}
-
-#display {
-    background-color: white;
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: var(--gap);
-    align-content: center;
 }
 
 .o {
@@ -131,10 +109,35 @@ footer {
 }
 
 .botAvailable {
-    background-color: yellow;
+    background-color: #ffffa2
 }
 
 .botOn {
     background-color: red;
 }
 
+#display {
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: var(--gap);
+    align-content: center;
+}
+
+#numInput {
+    width: 40px;
+    height: 75%;
+}
+
+#reset {
+    background-color: white;
+    color: black;
+    border: 0;
+    border-radius: 0;
+    height: 22px;
+    margin-right: 10px;
+}
+
+#reset:hover {
+    background-color: rgb(210, 210, 210);
+}
