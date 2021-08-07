@@ -30,7 +30,9 @@ This markdown outlines the technologies, approach taken, user instruction and un
 - Algorithm doesn't scale, exponential time and space complexity
 - Input buttons don't scale 
 - Looks bland
-- Add in a calculating... text update for the bot
+- Add in a "loading" or a "calculating" text update while we wait for the bot to load
+- If bot is enabled and you spam reset.. stack overflow
+- If you set num to high... stack overflow
 
 ## Instructions
 ---
@@ -39,3 +41,7 @@ This markdown outlines the technologies, approach taken, user instruction and un
 - Game size will set the game size after the game resets. 
 - Bot 'X' will engage the bot algorithm it will not work on game sizes other 3.
 - Bot 'X' can not be turned off mid game.
+
+## References
+---
+- [Tic Tac Toe: Understanding the Minimax Algorithm](https://www.neverstopbuilding.com/blog/minimax)

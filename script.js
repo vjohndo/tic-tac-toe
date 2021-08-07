@@ -156,18 +156,44 @@ const removeHoverState = (object) => {
 
 // Check game result
 const updateGameResult = () => {
+
+    const botQuips = [
+                    `HA HA HA human move inefficient`, 
+                    `your mammalian logic goes BRRT`,
+                    `is this a starter pack for bad moves?`,
+                    `oh no... you have a human brain`,
+                    `LOLOLOL good luck human`,
+                    `BOT > HUMAN, change my mind...`,
+                    `wow humans are bad at this`,
+                    `you're actually trying right?`,
+                    `This move does not spark joy`,
+                    `losing suits your aesthetic`,
+                    `last I checked your win count is 0`,
+                    `GG EZ`,
+                    `get better human loooooooool`,
+                    `how did you even open this page?`,
+                    `thinking to hard?? brain is ouchy??`,
+                    `Yikes, feel free to surrender`
+                ]
+
     gameCheckResult = (gameboardWinCheck(gameState));
     if (gameCheckResult === "O" || gameCheckResult === "X") {
         gamelog.textContent = `WINNER IS ${currentMark(!isOTurn)}!`;
         whoWon = currentMark(!isOTurn);
         isGameOver = true;
         removeNodeEvents();
+        if (isBotOn) {
+            gamelog.textContent = `COMPUTER WINS TRIUMPHANTLY!`
+        }
     } else if (movesMade === moveLimit) {
         gamelog.textContent = `IT'S A DRAW`;
         isGameOver = true;
         removeNodeEvents();
     } else {
         gamelog.textContent = `Player's Turn: ${currentMark(isOTurn)}`;
+        if (isBotOn) {
+            gamelog.textContent = botQuips[Math.floor(botQuips.length * Math.random())]
+        }
     }
 }
 
@@ -260,8 +286,17 @@ const generateGameboard = () => {
 
 // Generates first board on game start & make enter on num input work
 (() => {
+    const randomText = [`Best experienced at IMAX theatres`, 
+                        `Premium version via google search`, 
+                        `Don't set the gamesize to 1000 :)`,
+                        `Try Command-W or Alt-F4`,
+                        `Welcome to tic-tac-toe simulator`,
+                        `Don't trust other instructions`,
+                        `Improved performane, with no monitor`,
+                        `Everything is a feature not a bug`]
+
     generateGameboard();
-    gamelog.textContent = `Welcome...`
+    gamelog.textContent = randomText[Math.floor(randomText.length * Math.random())]
     resetButton.addEventListener('click', generateGameboard)
     sizeInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {generateGameboard()}
