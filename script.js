@@ -160,7 +160,7 @@ const updateGameResult = () => {
     const botQuips = [
                     `HA HA HA human move inefficient`, 
                     `your mammalian logic goes BRRT`,
-                    `u making a starter pack for bad moves?`,
+                    `is this a starter pack for bad moves?`,
                     `oh no... you have a human brain`,
                     `LOLOLOL good luck human`,
                     `BOT > HUMAN, change my mind...`,
@@ -172,7 +172,7 @@ const updateGameResult = () => {
                     `GG EZ`,
                     `get better human loooooooool`,
                     `how did you even open this page?`,
-                    `thinking to hard?? brain is ouchy??`
+                    `thinking to hard?? brain is ouchy??`,
                     `Yikes, feel free to surrender`
                 ]
 
