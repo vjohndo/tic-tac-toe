@@ -170,7 +170,7 @@ const updateGameResult = () => {
                     `losing suits your aesthetic`,
                     `last I checked your win count is 0`,
                     `GG EZ`,
-                    `get better human loooooooool`,
+                    `get gud human loooooooool`,
                     `how did you even open this page?`,
                     `thinking to hard?? brain is ouchy??`,
                     `Yikes, feel free to surrender`
