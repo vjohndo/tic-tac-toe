@@ -1,6 +1,7 @@
-// BOT SCRIPT ONLY...
+// BOT SCRIPT //
 
-function indexOfMax(arr) {
+// Finds index of max value. Somewhat random chooses max if there are multiple of the same.
+const indexOfMax = (arr) => {
     if (arr.length === 0) {
         return -1;
     }
@@ -9,16 +10,20 @@ function indexOfMax(arr) {
     let maxIndex = 0;
 
     for (let i = 1; i < arr.length; i++) {
-        if (arr[i] > max) {
+        let rand = Math.random();
+        if (arr[i] === max && rand >= 0.5) {
+            maxIndex = i;
+            max = arr[i];
+        } else if (arr[i] > max) {
             maxIndex = i;
             max = arr[i];
         }
     }
-
     return maxIndex;
 }
 
-function indexOfMin(arr) {
+// Finds index of min value. Somewhat random chooses max if there are multiple of the same.
+const indexOfMin = (arr) => {
     if (arr.length === 0) {
         return -1;
     }
@@ -27,10 +32,15 @@ function indexOfMin(arr) {
     let minIndex = 0;
 
     for (let i = 0; i < arr.length; i++) {
+        let rand = Math.random();
+        if (arr[i] === min && rand >= 0.5) {
+            minIndex = i;
+            min = arr[i];
+        }
         if (arr[i] < min) {
             minIndex = i;
             min = arr[i];
-        }    
+        }
     }
     return minIndex
 }
@@ -51,6 +61,7 @@ const scoreGameFor = (marker, gameState) => {
     }
 }
 
+// calculates the number of moves for a given gamestate
 const numMovesLeft = (gameState) => {
     let possibleMoves = 0;
     for (let x = 0; x < gameSize; x++) {
@@ -63,6 +74,7 @@ const numMovesLeft = (gameState) => {
     return possibleMoves
 }
 
+// populates a gamesate at the ith empty index with marker
 const populateAtEmptyIndex = (gameState, i ,marker) => {
     const possibleGameState = JSON.parse(JSON.stringify(gameState))
     
@@ -82,14 +94,13 @@ const populateAtEmptyIndex = (gameState, i ,marker) => {
     }
 }
 
-const xBest = {
-                move: null,
-                score: null
-            };
+// object to hold X's best move
+const xBest = {move: null};
         
-// Currently only works for "X", must therefore start on isOTurn = false.
+// Minimax algorithm
 const miniMax = (gameState, isOTurn = false) => {
-    // for the GIVEN game state, is the game over.
+    
+    // for the GIVEN game state, if the game is over, return score for "X"
     let isGameOver = Boolean(gameboardWinCheck(gameState))
     if (isGameOver) {
         return scoreGameFor("X",gameState);
@@ -101,14 +112,15 @@ const miniMax = (gameState, isOTurn = false) => {
     let movesLeft = numMovesLeft(gameState);
     let mark = currentMark(isOTurn);
 
+    // For the remaning possible games, generate a new possible game state
+    // As the game states may not be over, run miniMax on those games states, but flipping the turn
+    // push scores and moves to above array
     for (let i = 0; i < movesLeft; i++) {
         let possibleGame = populateAtEmptyIndex(gameState,i,mark);
         
         possibleScores.push(miniMax(possibleGame.state,!isOTurn));
         possibleMoves.push(possibleGame.move);
     }
-
-    xBest.score = possibleScores;
 
     // IF IT WAS THE PLAYER'S O's TURN RETURN MIN SCORE
     if (isOTurn) {
@@ -123,23 +135,20 @@ const miniMax = (gameState, isOTurn = false) => {
     }
 }
 
+// Function to run in console for testing
 const runMiniMax = () => {
     miniMax(gameState,isOTurn);
     console.log(xBest.move);
 }
 
+// Funtion that marks the board with bot's best move... could have refactored this with "node clicked"
 const markBoard = () => {
 
-    
-
-    miniMax(gameState,isOTurn)
-    let arr = xBest.move
+    miniMax(gameState,isOTurn);
+    let arr = xBest.move;
     const targetNode = document.querySelector(`.r${arr[0]}c${arr[1]}`);
-    console.log(`.r${arr[0]}c${arr[1]}`)
 
-    targetNode.removeEventListener('mouseover', nodeMouseEnter);
-    targetNode.removeEventListener('mouseleave', nodeMouseLeave);
-    targetNode.classList.remove(currentMark(isOTurn));
+    removeHoverState(targetNode);
 
     const rowChosen = targetNode.dataset.row;
     const colChosen = targetNode.dataset.col;
@@ -149,20 +158,8 @@ const markBoard = () => {
     targetNode.classList.add(targetNode.textContent.toLowerCase());
     targetNode.classList.add('bot');
     targetNode.style.userSelect = 'none'
-    gameState[rowChosen][colChosen] = targetNode.textContent
+    gameState[rowChosen][colChosen] = targetNode.textContent;
     isOTurn = !isOTurn;
 
-    gameCheckResult = (gameboardWinCheck(gameState));
-    if (gameCheckResult === "O" || gameCheckResult === "X") {
-        gamelog.textContent = `Game has been won by ${currentMark(!isOTurn)}`
-        whoWon = currentMark(!isOTurn);
-        isGameOver = true;
-        removeNodeEvents();
-    } else if (movesMade === moveLimit) {
-        gamelog.textContent = `It's a draw`
-        isGameOver = true;
-        removeNodeEvents()
-    } else {
-        gamelog.textContent = `Player's Turn: ${currentMark(isOTurn)}`;
-    }
+    updateGameResult();
 }

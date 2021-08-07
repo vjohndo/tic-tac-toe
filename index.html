@@ -1,30 +1,33 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Tic-Tac-Toe</title>
-     <link rel="stylesheet" href="style.css">
- </head>
- <body>
-     <header>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
         <h1>Tic-Tac-Toe Simulator</h1>
-     </header>
-     <section id='gameControls'> 
-         <span>FIRST TURN: <input type="radio" id="oRadio"><label>'O'</label><input type="radio" id="xRadio"><label>'X'</label></span>
-         <span id = 'sizeInput'>BOARD SIZE: <input type="number" value="3" id='textInput' min="1" max="100"></span>
-         <span><button id="reset">RESET</button><button id='bot' class='botButton'>BOT 'X'</button></span>
-     </section>
-     <main>
-        <p id="gamelog">Click Play</p>
-         <div id="display">
-         </div>
-     </main>
-     <footer>
-         Beta version 1.00
-     </footer>
-     <script src="script.js"></script>
-     <script src="bot.js"></script>
- </body>
- </html>
+    </header>
+    <section id='gameControls'>
+        <span>FIRST TURN: <input type="radio" id="oRadio"><label>'O'</label><input type="radio" id="xRadio"><label>'X'</label></span>
+        <span id='sizeInput'>BOARD SIZE: <input type="number" value="3" id='numInput' min="1" max="100"></span>
+        <span><button id="reset">RESET</button><button id='bot' class='botButton'>BOT 'X'</button></span>
+    </section>
+    <main>
+        <p id="gamelog"></p>
+        <div id="display">
+        </div>
+    </main>
+    <footer>
+        Beta version 1.02
+    </footer>
+    <script src="script.js"></script>
+    <script src="bot.js"></script>
+</body>
+
+</html>
