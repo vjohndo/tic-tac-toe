@@ -63,7 +63,6 @@ const arraySameCheck = (arr) => {
 
 // Function that updates Bot Button class 
 const updateBotButton = () => {
-    console.log('this is firing');
     if (gameSize !== 3 && isBotOn) {
         botButton.classList.remove('botOn');
         isBotOn = false;
