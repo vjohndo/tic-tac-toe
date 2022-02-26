@@ -45,6 +45,7 @@ const toggleBot = () => {
             isBotOn = !isBotOn;
             botButton.classList.toggle('botOn');
             if (isBotOn && !isOTurn) {
+                // Delays the first placement by the bot for better experience.
                 setTimeout(markBoard(),500);
             }
         }
@@ -62,6 +63,7 @@ const arraySameCheck = (arr) => {
 
 // Function that updates Bot Button class 
 const updateBotButton = () => {
+    console.log('this is firing');
     if (gameSize !== 3 && isBotOn) {
         botButton.classList.remove('botOn');
         isBotOn = false;
@@ -183,7 +185,7 @@ const updateGameResult = () => {
         isGameOver = true;
         removeNodeEvents();
         if (isBotOn) {
-            gamelog.textContent = `COMPUTER WINS TRIUMPHANTLY!`
+            gamelog.textContent = `COMPUTER WINS TRIUMPHANTLY!`;
         }
     } else if (movesMade === moveLimit) {
         gamelog.textContent = `IT'S A DRAW`;
@@ -286,17 +288,8 @@ const generateGameboard = () => {
 
 // Generates first board on game start & make enter on num input work
 (() => {
-    const randomText = [`Best experienced at IMAX theatres`, 
-                        `Premium version via google search`, 
-                        `Don't set the gamesize to 1000 :)`,
-                        `Try Command-W or Alt-F4`,
-                        `Welcome to tic-tac-toe simulator`,
-                        `Don't trust other instructions`,
-                        `Improved performane, with no monitor`,
-                        `Everything is a feature not a bug`]
-
     generateGameboard();
-    gamelog.textContent = randomText[Math.floor(randomText.length * Math.random())]
+    gamelog.textContent = "BOT 'X' ONLY ON BORAD SIZE 3";
     resetButton.addEventListener('click', generateGameboard)
     sizeInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {generateGameboard()}
