@@ -26,7 +26,8 @@ const xStart = (event) => {
         generateGameboard();
     }
     if (isBotOn && !isOTurn) {
-        setTimeout(markBoard(),500);
+        disablePlayerClick();
+        setTimeout(markBoard,Math.floor(Math.random() * 300) + 200);
     }
 }
 const oStart = (event) => {
@@ -46,7 +47,8 @@ const toggleBot = () => {
             botButton.classList.toggle('botOn');
             if (isBotOn && !isOTurn) {
                 // Delays the first placement by the bot for better experience.
-                setTimeout(markBoard(),500);
+                disablePlayerClick();
+                setTimeout(markBoard,Math.floor(Math.random() * 300) + 200);
             }
         }
     }
@@ -136,6 +138,29 @@ const removeNodeEvents = () => {
         }
 }
 
+// Function that removes clicks
+const disablePlayerClick = () => {
+    const nodes = document.querySelectorAll('.coord');
+    for (let node of nodes) {
+        if (!(node.classList.contains('o') || node.classList.contains('x'))) {
+            node.removeEventListener('click', nodeClicked);
+            node.removeEventListener('mouseover', nodeMouseEnter);
+            node.removeEventListener('mouseleave', nodeMouseLeave);
+        }
+    }
+}
+
+const enablePlayerClick = () => {
+    const nodes = document.querySelectorAll('.coord');
+    for (let node of nodes) {
+        if (!(node.classList.contains('o') || node.classList.contains('x'))) {
+            node.addEventListener('click', nodeClicked);
+            node.addEventListener('mouseover', nodeMouseEnter);
+            node.addEventListener('mouseleave', nodeMouseLeave);
+        }
+    }
+}
+
 // Call back function for the adding in the hover effect
 const nodeMouseEnter = (event) => {
     event.target.textContent = currentMark(isOTurn);
@@ -159,22 +184,22 @@ const removeHoverState = (object) => {
 const updateGameResult = () => {
 
     const botQuips = [
-                    `HA HA HA human move inefficient`, 
-                    `your mammalian logic goes BRRT`,
-                    `is this a starter pack for bad moves?`,
-                    `oh no... you have a human brain`,
-                    `LOLOLOL good luck human`,
-                    `BOT > HUMAN, change my mind...`,
-                    `wow humans are bad at this`,
-                    `you're actually trying right?`,
-                    `This move does not spark joy`,
-                    `losing suits your aesthetic`,
-                    `last I checked your win count is 0`,
-                    `GG EZ`,
-                    `get gud human loooooooool`,
-                    `how did you even open this page?`,
-                    `thinking to hard?? brain is ouchy??`,
-                    `Yikes, feel free to surrender`
+                    `BOT makes the best possible move`, 
+                    `BOT refuses to lose`,
+                    `BOT counters your move`,
+                    `BOT uses the minimax decision rule`,
+                    `BOT goes on the offence`,
+                    `BOT uses "stategise" to make a move`,
+                    `BOT seeks victory at all costs`,
+                    `BOT responds to your challenge`,
+                    `BOT is trying to defeat you`,
+                    `BOT is in search of victory`,
+                    `BOT is determined to win`,
+                    `BOT plays a stylish move`,
+                    `BOT tries to make a winning play`,
+                    `BOT makes a move in response`,
+                    `BOT sees through your play`,
+                    `BOT uses all its might to move`,
                 ]
 
     gameCheckResult = (gameboardWinCheck(gameState));
@@ -184,7 +209,7 @@ const updateGameResult = () => {
         isGameOver = true;
         removeNodeEvents();
         if (isBotOn) {
-            gamelog.textContent = `COMPUTER WINS TRIUMPHANTLY!`;
+            gamelog.textContent = `BOT WINS!`;
         }
     } else if (movesMade === moveLimit) {
         gamelog.textContent = `IT'S A DRAW`;
@@ -218,10 +243,17 @@ const nodeClicked = (event) => {
         // GLOBAL GAME VARIABLE FLIPPED
         isOTurn = !isOTurn;
 
-        updateGameResult();
+        disablePlayerClick();
+
+        // Code that runs only when 
+        if (!(isBotOn && !isOTurn && (movesMade < moveLimit))) {
+            enablePlayerClick();
+            updateGameResult();
+        }        
     }
     if (isBotOn && !isOTurn && (movesMade < moveLimit)) {
-        markBoard();
+        disablePlayerClick();
+        setTimeout(markBoard,Math.floor(Math.random() * 300) + 200);
     } 
 }
 
@@ -281,7 +313,8 @@ const generateGameboard = () => {
 
     // If the bot is on and it is X's turn run the bot.
     if (isBotOn && !isOTurn) {
-        setTimeout(markBoard(),500);
+        disablePlayerClick();
+        setTimeout(markBoard,Math.floor(Math.random() * 300) + 200);
     };
 }
 

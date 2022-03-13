@@ -144,6 +144,9 @@ const runMiniMax = () => {
 // Funtion that marks the board with bot's best move... could have refactored this with "node clicked"
 const markBoard = () => {
 
+    // Adds back clicks
+    enablePlayerClick();
+    
     miniMax(gameState,isOTurn);
     let arr = xBest.move;
     const targetNode = document.querySelector(`.r${arr[0]}c${arr[1]}`);
