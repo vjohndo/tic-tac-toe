@@ -26,8 +26,7 @@ const xStart = (event) => {
         generateGameboard();
     }
     if (isBotOn && !isOTurn) {
-        disablePlayerClick();
-        setTimeout(markBoard,Math.floor(Math.random() * 300) + 200);
+        markBoard();
     }
 }
 const oStart = (event) => {
@@ -47,9 +46,10 @@ const toggleBot = () => {
             botButton.classList.toggle('botOn');
             if (isBotOn && !isOTurn) {
                 // Delays the first placement by the bot for better experience.
-                disablePlayerClick();
-                setTimeout(markBoard,Math.floor(Math.random() * 300) + 200);
+                markBoard();
             }
+        } else {
+            gamelog.textContent = "Try again when game is finished or rest!";
         }
     }
 }
@@ -313,15 +313,14 @@ const generateGameboard = () => {
 
     // If the bot is on and it is X's turn run the bot.
     if (isBotOn && !isOTurn) {
-        disablePlayerClick();
-        setTimeout(markBoard,Math.floor(Math.random() * 300) + 200);
+        markBoard();
     };
 }
 
 // Generates first board on game start & make enter on num input work
 (() => {
     generateGameboard();
-    gamelog.textContent = "BOT 'X' ONLY ON BORAD SIZE 3";
+    gamelog.textContent = "Click BOT 'X' button when board size is 3";
     resetButton.addEventListener('click', generateGameboard)
     sizeInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {generateGameboard()}

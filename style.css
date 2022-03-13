@@ -39,7 +39,7 @@ footer {
     font-size: 1vmin;
 }
 
-span {
+.controls {
     flex-basis: 100%;
     text-align: center;
 }
@@ -60,6 +60,11 @@ button:hover {
 h1 {
     font-size: 5vmin;
     margin-bottom: 0;
+}
+
+h5 {
+    margin-top: 10px;
+    padding-bottom: 20px;
 }
 
 p {

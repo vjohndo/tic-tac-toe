@@ -11,7 +11,7 @@ const indexOfMax = (arr) => {
 
     for (let i = 1; i < arr.length; i++) {
         let rand = Math.random();
-        if (arr[i] === max && rand >= 0.5) {
+        if (arr[i] === max && rand >= (0.65)) {
             maxIndex = i;
             max = arr[i];
         } else if (arr[i] > max) {
