@@ -1,5 +1,28 @@
 # tic-tac-toe simulator
-This markdown outlines the technologies, approach taken, user instruction and unsolved problems of this tic-tac-toe simulator.
+A responsive tic-tac-toe board that can be adjusted to almost any size for two local players whether its 3x3, 50x50 or more. Optional bot to play against the user that attempts to dishearten you while you play. Built using pure HTML/CSS/JS.
+
+Playable here: [https://vjohndo.github.io/tic-tac-toe-bot/](https://vjohndo.github.io/tic-tac-toe-bot/)
+
+>Regular 3x3 mode for player against player
+
+![3x3 mode](./readme_imgs/3x3.png)
+
+>50x50 mode for player against player
+
+![5x5 mode](./readme_imgs/50x50.png)
+
+>Minimax algorithm AI bot
+
+![computerAI](./readme_imgs/computerAI.png)
+
+
+## Instructions
+---
+- Game will reset on clicking the rest button.
+- Radio buttons set who starts the game.
+- Game size will set the game size after the game resets. 
+- Bot 'X' will engage the bot algorithm it will not work on game sizes other 3.
+- Bot 'X' can not be turned off mid game.
 
 ## Techonologies used
 ---
@@ -34,13 +57,7 @@ This markdown outlines the technologies, approach taken, user instruction and un
 - If bot is enabled and you spam reset.. stack overflow
 - If you set num to high... stack overflow
 
-## Instructions
----
-- Game will reset on clicking the rest button.
-- Radio buttons set who starts the game.
-- Game size will set the game size after the game resets. 
-- Bot 'X' will engage the bot algorithm it will not work on game sizes other 3.
-- Bot 'X' can not be turned off mid game.
+
 
 ## References
 ---
