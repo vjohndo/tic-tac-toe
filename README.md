@@ -11,7 +11,7 @@ Playable here: [https://vjohndo.github.io/tic-tac-toe-bot/](https://vjohndo.gith
 
 ![5x5 mode](./readme_imgs/50x50.png)
 
->Minimax algorithm AI bot
+>Minimax algorithm AI bot with cheesy lines
 
 ![computerAI](./readme_imgs/computerAI.png)
 
