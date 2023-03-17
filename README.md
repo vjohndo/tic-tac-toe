@@ -1,5 +1,5 @@
 # tic-tac-toe simulator
-A responsive tic-tac-toe board that can be adjusted to almost any size for two local players whether its 3x3, 50x50 or more. Optional minimax AI that plays against the user that attempts to dishearten you while you play with cheesy lines. Built using pure HTML/CSS/JS.
+A responsive tic-tac-toe board that can be adjusted to almost any size for two local players whether its 3x3, 50x50 or more. Optional minimax AI that plays against the user and attempts to dishearten them while they play with cheesy lines. Built using pure HTML/CSS/JS.
 
 Playable here: [https://vjohndo.github.io/tic-tac-toe-bot/](https://vjohndo.github.io/tic-tac-toe-bot/)
 
