@@ -1,5 +1,5 @@
 # tic-tac-toe simulator
-A responsive tic-tac-toe board that can be adjusted to almost any size for two local players whether its 3x3, 50x50 or more. An optional AI can play against the user and will attempts to dishearten with cheesy lines. Built using pure HTML/CSS/JS.
+A responsive tic-tac-toe board that can be adjusted to almost any size for two local players whether its 3x3, 50x50 or more. An optional AI bot can play against the user and will attempt to dishearten them with cheesy lines. Built using pure HTML/CSS/JS.
 
 Playable here: [https://vjohndo.github.io/tic-tac-toe-bot/](https://vjohndo.github.io/tic-tac-toe-bot/)
 
@@ -21,7 +21,7 @@ Playable here: [https://vjohndo.github.io/tic-tac-toe-bot/](https://vjohndo.gith
 - Game will reset on clicking the rest button.
 - Radio buttons set who starts the game.
 - Game size will set the game size after the game resets. 
-- Bot 'X' will engage the bot algorithm it will not work on game sizes other 3.
+- Bot 'X' will engage the bot algorithm but it will not work on game sizes other 3.
 - Bot 'X' can not be turned off mid game.
 
 ## Techonologies used
@@ -51,11 +51,10 @@ Playable here: [https://vjohndo.github.io/tic-tac-toe-bot/](https://vjohndo.gith
 ## Unsolved Problems
 ---
 - Algorithm doesn't scale, exponential time and space complexity
-- Input buttons don't scale 
-- Looks bland
+- Input buttons are not responsive
 - Add in a "loading" or a "calculating" text update while we wait for the bot to load
-- If bot is enabled and you spam reset.. stack overflow
-- If you set num to high... stack overflow
+- If bot is enabled and user spams the reset button will trigger a stack overflow
+- If you set the board size too high, this will trigger high stack overflow
 
 
 
